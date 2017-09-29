@@ -12,14 +12,18 @@ import (
 const fileDir = "files"
 const maxTimeToAllowDownload = 1
 
-func getBindPort(defaultPort int) int {
-	portStr := os.Getenv("BIND_PORT")
-	port, err := strconv.Atoi(portStr)
-	if err != nil || port < 0 || port > 65535 {
-		port = defaultPort
-		log.Printf("Will use default port %d\n", port)
+func getAddress(defaultAddress string) string {
+	addrStr := os.Getenv("BIND_ADDRESS")
+	parts := strings.Split(addrStr, ":")
+
+	if len(parts) == 2 {
+		port, err := strconv.Atoi(parts[1])
+		if err == nil && port > 0 && port < 65535 {
+			return addrStr
+		}
 	}
-	return port
+	log.Printf("Will use default address %s\n", defaultAddress)
+	return defaultAddress
 }
 
 func main() {
@@ -30,9 +34,9 @@ func main() {
 	limitedNumberHandler.disallowAccess("README.md")
 
 	http.Handle("/", limitedNumberHandler)
-	port := getBindPort(8080)
-	log.Printf("Starting server on port %d...\n", port)
-	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	address := getAddress("localhost:8080")
+	log.Printf("Starting server on %s...\n", address)
+	err := http.ListenAndServe(address, nil)
 	if err != nil {
 		log.Fatal(err)
 	}

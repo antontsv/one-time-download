@@ -8,8 +8,8 @@ Place files you want to serve into `files`
 For example you can add `files/test.html`.
 Example run:
 ```sh
-BIND_PORT=8080 go run main.go
-Starting server on port 8080...
+BIND_ADDRESS=localhost:8080 go run main.go
+Starting server on localhost:8080...
 ```
 
 ```sh
