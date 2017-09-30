@@ -1,5 +1,5 @@
-// Package limfs provides a functionality of static file server
-// with enforces a limit on maximum number of downloads
+// Package limfs provides functionality of a static file server
+// which enforces a limit on maximum number of downloads
 package limfs
 
 import (
@@ -39,6 +39,7 @@ func respondWithMessage(w http.ResponseWriter, msg string, httpStatus int) {
 	}
 }
 
+// ServeHTTP handles file download over HTTP
 func (ltdHandler *LimitedHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	log.Print(r)
 	v := ltdHandler.timesAccessed(r.RequestURI)
