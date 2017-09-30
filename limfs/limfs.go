@@ -63,7 +63,7 @@ func (ltdHandler *LimitedHandler) timesAccessed(path string) *int {
 		path = "/" + path
 	}
 	requestedFile := fmt.Sprintf("%s%s", ltdHandler.dirPath, path)
-	if _, err := os.Stat(requestedFile); !os.IsNotExist(err) {
+	if info, err := os.Stat(requestedFile); !os.IsNotExist(err) && !info.IsDir() {
 		v, ok := ltdHandler.filesAccessed[requestedFile]
 		if !ok {
 			var init = 0
