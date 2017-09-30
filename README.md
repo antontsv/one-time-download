@@ -19,7 +19,7 @@ Accept-Ranges: bytes
 Content-Length: 14
 Content-Type: text/html; charset=utf-8
 Last-Modified: Thu, 28 Sep 2017 05:32:48 GMT
-X-Download-Times: 1
+X-Times-Remaining: 0
 Date: Thu, 28 Sep 2017 05:33:14 GMT
 
 <h1>Hello</h1>

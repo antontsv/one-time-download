@@ -52,7 +52,7 @@ func (ltdHandler *LimitedHandler) ServeHTTP(w http.ResponseWriter, r *http.Reque
 	}
 	if r.Method == http.MethodGet {
 		(*v)++
-		w.Header().Add("X-Remaining-Times", strconv.Itoa(ltdHandler.maxTimesPerFile-*ltdHandler.timesAccessed(r.RequestURI)))
+		w.Header().Add("X-Times-Remaining", strconv.Itoa(ltdHandler.maxTimesPerFile-*ltdHandler.timesAccessed(r.RequestURI)))
 		ltdHandler.fs.ServeHTTP(w, r)
 	}
 
