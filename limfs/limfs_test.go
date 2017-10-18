@@ -32,9 +32,15 @@ func TestLimit(t *testing.T) {
 	maxTimes := 2
 	handler := New(dir, maxTimes)
 
-	times := handler.timesAccessed("non-existing.file")
+	nonExistent := "non-existing.file"
+	times := handler.timesAccessed(nonExistent)
 	if times != nil {
-		t.Error("Non-exising file should not have associated access times counter")
+		t.Error("Non-existing file should not have associated access times counter")
+	}
+	disallowResult := handler.DisallowAccess(nonExistent)
+	times = handler.timesAccessed(nonExistent)
+	if disallowResult || times != nil {
+		t.Error("Disallow access on non-existing file should return false and not change access the counter")
 	}
 
 	times = handler.timesAccessed(subdirName)
@@ -47,7 +53,7 @@ func TestLimit(t *testing.T) {
 		t.Error("Existing file should be initialized with zero counter")
 	}
 
-	disallowResult := handler.DisallowAccess(existingFileName)
+	disallowResult = handler.DisallowAccess(existingFileName)
 	times = handler.timesAccessed(existingFileName)
 	if !disallowResult || times == nil || *times != maxTimes {
 		t.Error("Disallow access method should set access times to max allowed")
