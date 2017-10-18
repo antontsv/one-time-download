@@ -29,7 +29,8 @@ func TestLimit(t *testing.T) {
 		t.Fatalf("cannot create nested dir inside file server directory: %v", err)
 	}
 
-	handler := New(dir, 1)
+	maxTimes := 2
+	handler := New(dir, maxTimes)
 
 	times := handler.timesAccessed("non-existing.file")
 	if times != nil {
@@ -44,6 +45,12 @@ func TestLimit(t *testing.T) {
 	times = handler.timesAccessed(existingFileName)
 	if times == nil || *times != 0 {
 		t.Error("Existing file should be initialized with zero counter")
+	}
+
+	disallowResult := handler.DisallowAccess(existingFileName)
+	times = handler.timesAccessed(existingFileName)
+	if !disallowResult || times == nil || *times != maxTimes {
+		t.Error("Disallow access method should set access times to max allowed")
 	}
 
 	subdirfn := "info_from_subdir.txt"
