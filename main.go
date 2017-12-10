@@ -30,7 +30,6 @@ func getAddress(defaultAddress string) string {
 			return addrStr
 		}
 	}
-	log.Printf("Will use default address %s\n", defaultAddress)
 	return defaultAddress
 }
 
